@@ -1,18 +1,18 @@
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+
 public class Cache<T> {
 
-    private final TreeMap<String, ItemCache<T>> map = new TreeMap<String, ItemCache<T>>();
-    private final Thread t1;
+    private final Map<String, ItemCache<T>> map = new HashMap<String, ItemCache<T>>();
     private final int validadeSegundos;
 
     public Cache(int validadeSegundos)
     {
         this.validadeSegundos = validadeSegundos;
-        t1 = new Thread(() -> {
+        Thread t1 = new Thread(() -> {
             try {
                 Limpar();
             } catch (InterruptedException e) {
@@ -21,6 +21,7 @@ public class Cache<T> {
         });
         t1.start();
     }
+    @SuppressWarnings("unchecked")
     public T Get(String key)
     {
         if (map.containsKey(key))
@@ -34,16 +35,23 @@ public class Cache<T> {
         if (map.containsKey(key))
             map.get(key).update(value);
         else
-            map.put(key, new ItemCache<T>(key, value));
+            map.put(key, new ItemCache<>(key, value));
     }
 
     private void Limpar() throws InterruptedException {
-        Set<String> keys = map.keySet();
-        for (String k : keys)
-            if (!map.get(k).isValid(validadeSegundos))
-                map.remove(k);
+        //noinspection InfiniteLoopStatement
+        while(true) {
+            synchronized(this)
+            {
+                Set<String> keys = map.keySet();
+                for (String k : keys) {
+                    if (!map.get(k).isValid(validadeSegundos))
+                        map.remove(k);
+                }
+            }
 
-        Thread.sleep(1000);
+            Thread.sleep(1000);
+        }
     }
 
 }

@@ -2,19 +2,20 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.TreeMap;
 
-public class EleicaoServant extends java.rmi.server.UnicastRemoteObject implements Eleicao {
+public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
 
     TreeMap<String, Candidato> map = new TreeMap<String, Candidato>();
+    Cache cache;
 
     public EleicaoServant() throws java.rmi.RemoteException {
         super();
+        this.cache = new Cache(30);
     }
 
     @Override
@@ -54,5 +55,10 @@ public class EleicaoServant extends java.rmi.server.UnicastRemoteObject implemen
         } catch (NoSuchAlgorithmException e) {
             System.out.println("NoSuchAlgorithmException: " + e.getMessage());
         }
+    }
+
+    @Override
+    public String testMethod() throws RemoteException {
+        return "CARALHO";
     }
 }

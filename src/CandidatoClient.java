@@ -2,18 +2,19 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class CandidatoClient {
     public static void main(String[] args) {
         String servidor = "rmi://localhost/";
         String nome = "EleicaoService";
         try {
-            Eleicao e = (Eleicao) Naming.lookup(servidor + nome);
-            System.out.println("Objeto remoto "+ nome + " encontrado no servidor.");
+            // lookup method to find reference of remote object
+            Eleicao access = (Eleicao) Naming.lookup("rmi://localhost:1900/EleicaoServer");
 
+            System.out.println("Teste " + access.testMethod());
 
-        } catch (MalformedURLException e) {
-            System.out.println("URL " + servidor + nome + " mal formatada.");
         } catch (RemoteException e) {
             System.out.println("Erro na invoca��o remota.");
             e.printStackTrace();
