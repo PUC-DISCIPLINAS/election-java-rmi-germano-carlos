@@ -1,3 +1,5 @@
+import Utils.Encript;
+
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.util.TreeMap;
@@ -15,6 +17,7 @@ public class EleicaoServer {
             Eleicao election = new EleicaoServant();
             election.readCSV("C:\\Users\\Carlos Germano\\Desktop\\senadores.csv");
 
+            //election.votar("653", Encript.StringToMD5("Carlos Germano","upper"));
             LocateRegistry.createRegistry(1900);
             Naming.rebind("rmi://localhost:1900/EleicaoServer",election);
             System.err.println("Servidor de Eleicao está sendo executado");

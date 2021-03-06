@@ -30,28 +30,26 @@ public class EleitorClient {
 
             boolean computado = false;
             //noinspection InfiniteLoopStatement
+            Date start = new Date();
             while(!computado)
             {
-                Date start = new Date();
                 //Realizar chamada para inserir voto!
-                try {
-                    computado = access.votar(nomeEleitor,codigoCandidato);
-                } catch (RemoteException e) {
-                    computado = valida(start);
-                } catch (Exception e) {
-                    computado = valida(start);
-                }
-
+                try { computado = access.votar(nomeEleitor,codigoCandidato); }
+                catch (RemoteException e) { computado = valida(start); }
+                catch (Exception e) { computado = valida(start); }
             }
 
-            System.out.println(access.testMethod());
+            if(computado)
+                System.out.println(access.result(codigoCandidato));
+            else
+                System.out.println("Não foi possível computador o seu voto...");
 
 
         } catch (NotBoundException e) {
             System.out.println("Objeto remoto " + nome + " n�o est� dispon�vel.");
             e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Não foi possível computador o seu voto...");
         }
     }
 }

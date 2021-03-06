@@ -10,4 +10,6 @@ public interface Eleicao extends java.rmi.Remote {
 
     String testMethod() throws Exception;
 
+    String result(String candidato) throws Exception;
+
 }

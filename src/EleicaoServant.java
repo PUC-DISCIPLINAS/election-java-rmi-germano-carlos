@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
@@ -34,6 +35,10 @@ public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
                 return true;
 
             String id = Encript.StringToMD5(candidato,"upper");
+
+            if(!localizaCandidatoB(id))
+                return true;
+
             this.map.get(id).setVotos(this.map.get(id).getVotos()+1);
             this.cache.Add(eleitor, new Voto(eleitor,candidato,true,true ));
 
@@ -102,5 +107,49 @@ public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
     @Override
     public void atualizaCSV(String pathtoCsv) throws RemoteException {
 
+    }
+
+    @Override
+    public String result(String numeroCandidato) throws RemoteException {
+
+        try {
+            Candidato candidato = this.localizaCandidato(Encript.StringToMD5(numeroCandidato,"upper"));
+
+            if(Objects.isNull(candidato))
+                return "Candidato não localizado, por favor insira um válido";
+            else {
+                return "*** Candidato encontrado *** \\n" +
+                        "Nome: " + candidato.getNome() + "\\n"+
+                        "HashId: " + candidato.getId() + "\\n" +
+                        "Partido: " + candidato.getPartido() + "\\n"+
+                        "Quantidade de Votos: " + candidato.getVotos() + "\\n";
+            }
+        } catch (Exception e) {
+            System.out.println("Exception :" + e.getMessage());
+        }
+
+        return "Ocorreu um erro ao chamar essa função. Tente novamente mais tarde !";
+    }
+
+    private Candidato localizaCandidato (String numeroC) {
+
+        Set<String> keys = map.keySet();
+        for (String k : keys) {
+            if(map.get(k).getId().equals(numeroC))
+                return map.get(k);
+        }
+
+        return null;
+    }
+
+    private boolean localizaCandidatoB (String numeroC) {
+
+        Set<String> keys = map.keySet();
+        for (String k : keys) {
+            if(map.get(k).getId().equals(numeroC))
+                return true;
+        }
+
+        return false;
     }
 }
