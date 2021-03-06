@@ -118,11 +118,11 @@ public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
             if(Objects.isNull(candidato))
                 return "Candidato não localizado, por favor insira um válido";
             else {
-                return "*** Candidato encontrado *** \\n" +
-                        "Nome: " + candidato.getNome() + "\\n"+
-                        "HashId: " + candidato.getId() + "\\n" +
-                        "Partido: " + candidato.getPartido() + "\\n"+
-                        "Quantidade de Votos: " + candidato.getVotos() + "\\n";
+                return "*** Candidato encontrado *** \n" +
+                        "Nome: " + candidato.getNome() + "\n"+
+                        "HashId: " + candidato.getId() + "\n" +
+                        "Partido: " + candidato.getPartido() + "\n"+
+                        "Quantidade de Votos: " + candidato.getVotos() + "\n";
             }
         } catch (Exception e) {
             System.out.println("Exception :" + e.getMessage());

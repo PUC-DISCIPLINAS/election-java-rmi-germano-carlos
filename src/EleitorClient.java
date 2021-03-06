@@ -29,7 +29,7 @@ public class EleitorClient {
 
 
             boolean computado = false;
-            //noinspection InfiniteLoopStatement
+
             Date start = new Date();
             while(!computado)
             {
@@ -39,11 +39,7 @@ public class EleitorClient {
                 catch (Exception e) { computado = valida(start); }
             }
 
-            if(computado)
-                System.out.println(access.result(codigoCandidato));
-            else
-                System.out.println("Não foi possível computador o seu voto...");
-
+            System.out.println(access.result(codigoCandidato));
 
         } catch (NotBoundException e) {
             System.out.println("Objeto remoto " + nome + " n�o est� dispon�vel.");
