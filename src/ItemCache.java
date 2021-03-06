@@ -18,7 +18,6 @@ public class ItemCache<T>
         this.value = value;
         this.ultimaAtualizacao = new Date();
     }
-
     public boolean isValid(int validadeSegundos)
     {
         Calendar aux = GregorianCalendar.getInstance();

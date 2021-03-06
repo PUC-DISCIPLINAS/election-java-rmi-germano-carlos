@@ -10,7 +10,7 @@ public class EleicaoServer {
     public EleicaoServer() {
         System.setProperty("java.rmi.server.hostname", "localhost");
         System.setProperty("java.rmi.server.useLocalHostname","true");
-        //System.setProperty("java.security.policy","rmi.policy");
+        System.setProperty("java.security.policy","rmi.policy");
         System.setSecurityManager(null);
 
         try {
@@ -19,7 +19,7 @@ public class EleicaoServer {
 
             LocateRegistry.createRegistry(1900);
             Naming.rebind("rmi://localhost:1900/EleicaoServer",election);
-            System.err.println("Server ready");
+            System.err.println("Servidor de Eleicao está sendo executado");
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -27,7 +27,6 @@ public class EleicaoServer {
 
     public static void main(String args[]) {
         new EleicaoServer();
-        System.out.println("Servidor de Eleicao em execu��o.");
     }
 
 }

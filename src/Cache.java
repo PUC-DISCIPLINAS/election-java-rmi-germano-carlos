@@ -12,6 +12,7 @@ public class Cache<T> {
     public Cache(int validadeSegundos)
     {
         this.validadeSegundos = validadeSegundos;
+
         Thread t1 = new Thread(() -> {
             try {
                 Limpar();
@@ -21,6 +22,7 @@ public class Cache<T> {
         });
         t1.start();
     }
+
     @SuppressWarnings("unchecked")
     public T Get(String key)
     {
@@ -41,13 +43,10 @@ public class Cache<T> {
     private void Limpar() throws InterruptedException {
         //noinspection InfiniteLoopStatement
         while(true) {
-            synchronized(this)
-            {
-                Set<String> keys = map.keySet();
-                for (String k : keys) {
-                    if (!map.get(k).isValid(validadeSegundos))
-                        map.remove(k);
-                }
+            Set<String> keys = map.keySet();
+            for (String k : keys) {
+                if (!map.get(k).isValid(validadeSegundos))
+                    map.remove(k);
             }
 
             Thread.sleep(1000);

@@ -1,25 +1,42 @@
-import javax.xml.bind.DatatypeConverter;
+import Utils.Encript;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.TreeMap;
 
 public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
 
     TreeMap<String, Candidato> map = new TreeMap<String, Candidato>();
-    Cache cache;
+    Cache<Object> cache;
 
     public EleicaoServant() throws java.rmi.RemoteException {
         super();
-        this.cache = new Cache(30);
+        this.cache = new Cache<>(30);
     }
 
     @Override
     public void votar(String eleitor, String candidato) throws RemoteException {
+
+        // Valida se o voto já esta no Cache
+        //var x = this.cache.Get(eleitor);
+
+
+            this.cache.Add(eleitor, new Object() {
+                public String hashEleit = eleitor;
+                public String numeroCand = candidato;
+                boolean vote = true;
+                boolean computado = false;
+            });
+
+
+
+
+
 
     }
 
@@ -41,12 +58,9 @@ public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
                     continue;
 
                 // Gera o hash MD5 baseado no nome do eleitor
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                md.update(data[0].getBytes());
-                byte[] digest = md.digest();
-                String md5String = DatatypeConverter.printHexBinary(digest).toUpperCase();
+                String md5String = Encript.StringToMD5(data[0], "upper");
 
-                //Adiciona o Candidato no TreeMap
+                // Adiciona o Candidato no TreeMap
                 this.adicionarCandidato(md5String, new Candidato(md5String,data[1],data[2]));
             }
             csvReader.close();
@@ -54,6 +68,8 @@ public class EleicaoServant extends UnicastRemoteObject implements Eleicao {
             System.out.println("IOException: " + e.getMessage());
         } catch (NoSuchAlgorithmException e) {
             System.out.println("NoSuchAlgorithmException: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
         }
     }
 
