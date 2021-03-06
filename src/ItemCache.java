@@ -27,4 +27,6 @@ public class ItemCache<T>
 
         return new Date().before(aux2);
     }
+
+    public T getValue() { return value; }
 }

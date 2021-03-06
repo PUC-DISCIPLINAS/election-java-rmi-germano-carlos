@@ -1,19 +1,16 @@
 import Utils.Encript;
-
-import javax.xml.bind.DatatypeConverter;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.security.MessageDigest;
+import java.util.Date;
 import java.util.Scanner;
+import static Utils.DateHelper.valida;
 
-public class CandidatoClient {
+public class EleitorClient {
     public static void main(String[] args) {
-        String servidor = "rmi://localhost/";
+        String servidor = "rmi://localhost:1900/";
         String nome = "EleicaoService";
+
         try {
             // lookup method to find reference of remote object
             Eleicao access = (Eleicao) Naming.lookup("rmi://localhost:1900/EleicaoServer");
@@ -30,19 +27,26 @@ public class CandidatoClient {
             System.out.println("Obrigado... Estamos computando o seu voto");
             System.out.println("Aguarde um pouco");
 
+
+            boolean computado = false;
             //noinspection InfiniteLoopStatement
-            while(true)
+            while(!computado)
             {
+                Date start = new Date();
                 //Realizar chamada para inserir voto!
+                try {
+                    computado = access.votar(nomeEleitor,codigoCandidato);
+                } catch (RemoteException e) {
+                    computado = valida(start);
+                } catch (Exception e) {
+                    computado = valida(start);
+                }
+
             }
 
+            System.out.println(access.testMethod());
 
 
-
-
-        } catch (RemoteException e) {
-            System.out.println("Erro na invoca��o remota.");
-            e.printStackTrace();
         } catch (NotBoundException e) {
             System.out.println("Objeto remoto " + nome + " n�o est� dispon�vel.");
             e.printStackTrace();

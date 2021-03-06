@@ -2,7 +2,6 @@ package Utils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
-import java.util.Locale;
 
 public class Encript {
 
@@ -20,6 +19,5 @@ public class Encript {
         else
             return DatatypeConverter.printHexBinary(digest).toUpperCase();
     }
-
 
 }

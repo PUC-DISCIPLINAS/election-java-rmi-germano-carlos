@@ -20,9 +20,10 @@ public class Candidato {
 
     public void setVotos(Integer votos) { this.votos = votos; }
 
-    public Candidato(String id, String nome, String partido) {
+    public Candidato(String id, String nome, String partido, int votos) {
         this.id = id;
         this.nome = nome;
         this.partido = partido;
+        this.votos = votos;
     }
 }

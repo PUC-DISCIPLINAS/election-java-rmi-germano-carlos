@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 
 public class Cache<T> {
@@ -23,11 +22,10 @@ public class Cache<T> {
         t1.start();
     }
 
-    @SuppressWarnings("unchecked")
     public T Get(String key)
     {
         if (map.containsKey(key))
-            return (T) map.get(key);
+            return map.get(key).getValue();
 
         return null;
     }
